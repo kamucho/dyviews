@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2 class="text-center mt-5 mb-4">All Functions</h2>
+    <a href="/add" class="ms-4 mb-4">Add Function</a>
+    <ul class="mt-3 ms-3">
+        {% for func in functions %}
+            <li>{{ func.name }}
+                <a href="/function/{{ func.id }}/">View</a>
+                <a class="text-danger" href="/function/delete/{{ func.id }}">Delete</a>
+                <a class="text-info" href="/function/edit/{{ func.id }}">Edit</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

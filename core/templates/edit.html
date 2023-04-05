@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2 class="text-center my-3">Edit Function</h2>
+    <form action="/function/edit/{{ function.id }}/" class="w-50 mx-auto" method="POST"
+          onsubmit="setCodeInput(event,this)">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="name" class="form-label">Function Name</label>
+            <input type="text" value="{{ function.name }}" id="name" class="form-control" name="name"
+                   placeholder="Enter Function Name" required>
+        </div>
+        <div class="mb-3">
+            Parameters ({{ params|length }}):-
+            <ul>
+                {% for param,type in params.items %}
+                    <li>{{ param }} - {{ type }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <label for="editor" class="form-label">Function Inside Code</label>
+        <div class="editor mb-3">
+            <div id="editor">{{ function.code }}</div>
+        </div>
+        <input type="hidden" id="code-input" class="form-control" rows="10" name="code"
+               placeholder="Enter Function Code" required>
+        <div class="mb-3">
+            <input type="submit" value="Update" class="btn btn-primary">
+        </div>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.setFontSize("18px")
+        editor.session.setMode("ace/mode/python");
+
+        const setCodeInput = (e, form) => {
+            e.preventDefault()
+            document.getElementById('code-input').value = editor.getValue()
+            form.submit()
+        }
+    </script>
+{% endblock %}

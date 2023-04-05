@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2 class="text-center mt-4 mb-3">Add Params</h2>
+    <div class="editor mb-3">
+        <div id="editor">{{ code }}</div>
+    </div>
+    <form action="/function/{{ id }}/" method="POST" class="w-50 mx-auto">
+        {% csrf_token %}
+        {% for param,type in params.items %}
+            <div class="mb-3">
+                {% if type == 'str' %}
+                    <label for="{{ param }}" class="form-label">{{ param }} {{ type }} (without parenthisis)</label>
+                {% else %}
+                    <label for="{{ param }}" class="form-label">{{ param }} {{ type }}</label>
+                {% endif %}
+
+                <input type="text" id="{{ param }}" name="{{ param }}" class="form-control" required>
+            </div>
+        {% endfor %}
+        <div class="mb-3">
+            <input type="submit" value="submit" class="btn btn-primary">
+        </div>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.setFontSize("18px")
+        editor.setReadOnly(true)
+        editor.session.setMode("ace/mode/python");
+    </script>
+{% endblock %}
